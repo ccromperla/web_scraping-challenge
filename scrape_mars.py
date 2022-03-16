@@ -36,15 +36,20 @@ def scrape_news(browser):
     url = 'https://redplanetscience.com/'
     browser.visit(url)
 
+    # Optional delay for loading news page 
+    browser.is_element_present_by_css('div.list_text', wait_time = 1)
+
     # HTML Soup
     html = browser.html
     soup = bs(html, 'html.parser')
 
+    slide_elem = soup.select_one('div.list_text')
+
     # Grabbing News title 
-    news_title = soup.find('div', class_='content_title').get_text
+    news_title = slide_elem.find('div', class_='content_title').get_text()
     
     # Grabbing news paragraph
-    news_p = soup.find('div', class_='article_teaser_body').get_text
+    news_p = slide_elem.find('div', class_='article_teaser_body').get_text()
 
     return news_title, news_p
 

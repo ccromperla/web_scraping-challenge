@@ -14,23 +14,27 @@ mongo = PyMongo(app)
 
 @app.route("/")
 def index():
-    # listings = mongo.db.listings.find_one()
-    # return render_template("index.html", listings=listings)
-
-    return('Hello World')
+    mars_data = mongo.db.marsData.find_one()
+    return render_template("index.html", mars=mars_data)
 
 
 @app.route("/scrape")
 def scrape():
-    mars_data = scrape_mars.scrape_all()
-    # print(mars_data)
+    # Refer to db collection 
+    marsTable = mongo.db.marsData
 
-    return mars_data
-    # listings = mongo.db.listings
-    # listings_data = scrape_mars.scrape()
-    # listings.update_one({}, {"$set": listings_data}, upsert=True)
-    # return redirect("/", code=302)
+    # If it exists drop it
+    mongo.db.marsData.drop()
+
+    # Call scrape mars script
+    mars_data = scrape_mars.scrape_all()
+
+    # Take dictionary and load it into mondgoDB
+    marsTable.insert_one(mars_data)
+
+    # Return to the index route
+    return redirect("/")
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
