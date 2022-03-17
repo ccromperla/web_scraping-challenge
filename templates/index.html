@@ -1,15 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <title>Mission to Mars</title>
 
 </head>
+
+<!-- Internal CSS for Image Gallery -->
+<style> 
+  div.gallery {
+  margin: 10px;
+  border: 1px solid #ccc;
+  float: left;
+  width: 150px;
+}
+
+div.gallery img {
+  width: 100%;
+  height: auto;
+}
+
+</style>
+
 <body>
   <div class="container">
 
@@ -26,8 +44,8 @@
         <div class="media">
           <div class="media-body">
             <h2>Latest Mars News</h2>
-            <h4 class="media=heading">{{ mars.newsTitle }}</h4>
-            <p> {{ mars.newsParagraph}} </p>
+            <h4 class="media-heading">{{ mars.newsTitle }}</h4>
+            <p> {{ mars.newsParagraph }} </p>
           </div>
         </div>
       </div>
@@ -39,9 +57,8 @@
         <h2>Featured Mars Image</h2>
 
         <!-- if image is False/None/non-existent, then default to error message -->
-        <img src="{{ mars.featuredImage | default('static/images/error.png', true) }}" 
-        class="img-resonsive"
-        alt="Responsive Image">
+        <img src="{{ mars.featuredImage | default('static/images/error.png', true) }}" class="img-resonsive"
+          alt="Responsive Image">
       </div>
 
       <div class="col-md-4">
@@ -53,23 +70,30 @@
       </div>
     </div>
 
-    <div class="row" id="mars-hemispheres">
-      <div class="page-header">
-        <h2 class="text-center" >Mars Hemispheres</h2>  
+    <br>
+
+    <!-- Section for Mars Hemispheres -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="page-header">
+          <h2 class="text-center">Mars Hemispheres</h2>
+        </div>
       </div>
 
-      { % for hemisphere in mars.hemispheres % }
+      <!-- Looping through each values in hemispheres -->
+      {% for hemisphere in mars.hemispheres %}
       <div class="col-md-3">
-        <div class="thumbnail">
-          <img src="{{hemisphere.img_url | default('static/images/error.png', true) }}" alt="...">
+        <div class="gallery">
+          <img src="{{hemisphere.img_url | default('static/images/error.png', true) }}" alt="..." width="150" height="150">
           <div class="caption">
-            <h3>{{ hemisphere.title }}</h3>
+            <h4>{{ hemisphere.title }}</h4>
           </div>
         </div>
       </div>
+      <!-- Remember to end for loop... -->
+      {% endfor %}
     </div>
   </div>
 
-  
-</body>
+  </body>
 </html>
